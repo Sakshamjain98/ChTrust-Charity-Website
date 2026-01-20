@@ -122,6 +122,10 @@
             "dest": "/server.js"
         },
         {
+            "src": "/blog-post/(.*)",
+            "dest": "/server.js"
+        },
+        {
             "handle": "filesystem"
         },
         {
