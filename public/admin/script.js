@@ -164,12 +164,16 @@ loginForm.addEventListener('submit', async (e) => {
         await loginAdmin(username, password);
         showToast('Login Successful!', 1500, 'success');
     } catch (err) {
-        console.error(err);
+        console.error('Login error:', err);
         let msg = err.message;
         if (err.code === 'auth/invalid-email') {
             msg = 'Invalid email address format.';
-        } else if (err.code === 'auth/user-not-found' || err.code === 'auth/wrong-password') {
+        } else if (err.code === 'auth/user-not-found' || err.code === 'auth/wrong-password' || err.code === 'auth/invalid-credential') {
             msg = 'Invalid username or password.';
+        } else if (err.code === 'auth/network-request-failed') {
+            msg = 'Network error. Please check your connection.';
+        } else if (err.message && err.message.includes('Firebase auth is not initialized')) {
+            msg = 'Authentication service not available. Please refresh the page.';
         }
         document.getElementById('login-error').innerText = msg;
     }

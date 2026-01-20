@@ -130,10 +130,9 @@
                             </div>
 
                             <div class="form-group">
-                                <label>Select File (Image or PDF) *</label>
-                                <input type="file" id="patient-file" accept="image/*,application/pdf" required>
-                                <small style="color: #666; display: block; margin-top: 5px;">Supported: JPG, PNG,
-                                    PDF</small>
+                                <label>Select File *</label>
+                                <input type="file" id="patient-file" accept="image/*,application/pdf,.doc,.docx,.xls,.xlsx,.txt,.csv" required>
+                                <small style="color: #666; display: block; margin-top: 5px;">Supported: Images (JPG, PNG, GIF), PDF, Word (.doc, .docx), Excel (.xls, .xlsx), Text (.txt, .csv)</small>
                             </div>
 
                             <!-- File Preview -->
@@ -252,7 +251,24 @@
             }
 
             fileName.textContent = file.name;
-            fileType.textContent = file.type.includes('pdf') ? 'PDF Document' : 'Image';
+            
+            // Determine file type for display
+            let displayType = 'Document';
+            if (file.type.includes('image')) {
+                displayType = 'Image';
+            } else if (file.type.includes('pdf')) {
+                displayType = 'PDF Document';
+            } else if (file.type.includes('word') || file.name.endsWith('.doc') || file.name.endsWith('.docx')) {
+                displayType = 'Word Document';
+            } else if (file.type.includes('sheet') || file.name.endsWith('.xls') || file.name.endsWith('.xlsx')) {
+                displayType = 'Excel Spreadsheet';
+            } else if (file.type.includes('text') || file.name.endsWith('.txt')) {
+                displayType = 'Text File';
+            } else if (file.name.endsWith('.csv')) {
+                displayType = 'CSV File';
+            }
+            
+            fileType.textContent = displayType;
             fileSize.textContent = (file.size / 1024).toFixed(2) + ' KB';
 
             if (file.type.includes('image')) {
@@ -262,8 +278,17 @@
                     filePreview.classList.add('active');
                 };
                 reader.readAsDataURL(file);
-            } else if (file.type === 'application/pdf') {
+            } else if (file.type.includes('pdf')) {
                 previewContent.innerHTML = '<div class="file-icon">📄</div>';
+                filePreview.classList.add('active');
+            } else if (file.type.includes('word') || file.name.endsWith('.doc') || file.name.endsWith('.docx')) {
+                previewContent.innerHTML = '<div class="file-icon">📝</div>';
+                filePreview.classList.add('active');
+            } else if (file.type.includes('sheet') || file.name.endsWith('.xls') || file.name.endsWith('.xlsx')) {
+                previewContent.innerHTML = '<div class="file-icon">📊</div>';
+                filePreview.classList.add('active');
+            } else {
+                previewContent.innerHTML = '<div class="file-icon">📎</div>';
                 filePreview.classList.add('active');
             }
         });

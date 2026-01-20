@@ -28,6 +28,10 @@
             "use": "@vercel/static"
         },
         {
+            "src": "assets/**",
+            "use": "@vercel/static"
+        },
+        {
             "src": "ajax/**",
             "use": "@vercel/static"
         },
@@ -82,16 +86,36 @@
             "dest": "/public/js/$1"
         },
         {
+            "src": "/admin/script.js",
+            "dest": "/public/admin/script.js"
+        },
+        {
+            "src": "/admin/style.css",
+            "dest": "/public/admin/style.css"
+        },
+        {
+            "src": "/admin/preview.html",
+            "dest": "/public/admin/preview.html"
+        },
+        {
+            "src": "/admin/send-files.html",
+            "dest": "/public/admin/send-files.html"
+        },
+        {
+            "src": "/admin/file-sending.html",
+            "dest": "/public/admin/file-sending.html"
+        },
+        {
             "src": "/api/(.*)",
             "dest": "/server.js"
         },
         {
             "src": "/admin",
-            "dest": "/server.js"
+            "dest": "/public/admin/index.html"
         },
         {
-            "src": "/admin/(.*)",
-            "dest": "/server.js"
+            "src": "/admin/",
+            "dest": "/public/admin/index.html"
         },
         {
             "src": "/env.js",

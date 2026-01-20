@@ -221,19 +221,21 @@ export const uploadImage = async (file) => {
 // REPORT UPLOAD - Fixed to use correct resource_type and presets
 export const uploadReportFile = async (file) => {
     try {
-        // 1. FILE TYPE DETECTION - Use MIME type primarily
+        // 1. FILE TYPE DETECTION - Check if it's an image or other file type
+        const isImage = file.type.startsWith('image/');
         const isPdf = file.type === 'application/pdf';
+        const isDocument = !isImage; // Everything that's not an image goes to /raw/upload
 
         // 2. RESOURCE TYPE & PRESET SELECTION
         // Images → /image/upload with 'blog_unsigned' preset
-        // PDFs → /raw/upload with 'pdf_raw_unsigned' preset
-        const resourceType = isPdf ? 'raw' : 'image';
-        const uploadPreset = isPdf ? 'pdf_raw_unsigned' : CLOUDINARY_UPLOAD_PRESET;
+        // PDFs and other files → /raw/upload with 'blog_unsigned' preset (same preset works for raw)
+        const resourceType = isImage ? 'image' : 'raw';
+        const uploadPreset = CLOUDINARY_UPLOAD_PRESET; // Use same preset for all file types
 
         // 3. CORRECT ENDPOINT - Endpoint decides resource type
-        const uploadUrl = isPdf
-            ? `https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/raw/upload`
-            : `https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/image/upload`;
+        const uploadUrl = isImage
+            ? `https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/image/upload`
+            : `https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/raw/upload`;
 
         // 4. UPLOAD IMPLEMENTATION
         const formData = new FormData();
@@ -256,21 +258,14 @@ export const uploadReportFile = async (file) => {
 
         const data = await response.json();
 
-        // 5. HANDLE RESPONSE - Generate download-safe URL for PDFs
-        let finalUrl = data.secure_url;
-
-        if (isPdf && finalUrl) {
-            // For PDFs, add fl_attachment flag to force download
-            // URL format: https://res.cloudinary.com/{cloud}/raw/upload/v{version}/{public_id}.pdf
-            // Target: https://res.cloudinary.com/{cloud}/raw/upload/fl_attachment/v{version}/{public_id}.pdf
-            if (finalUrl.includes('/raw/upload/') && !finalUrl.includes('fl_attachment')) {
-                finalUrl = finalUrl.replace('/raw/upload/', '/raw/upload/fl_attachment/');
-            }
-        }
+        // 5. HANDLE RESPONSE - Return the secure URL directly
+        // Note: fl_attachment transformation removed to avoid 401 errors with Strict Transformations enabled
+        // PDFs will open in browser instead of forcing download, but will be accessible
+        const finalUrl = data.secure_url;
 
         return {
             url: finalUrl,
-            format: data.format || (isPdf ? 'pdf' : 'jpg')
+            format: data.format || file.name.split('.').pop() || 'file'
         };
     } catch (error) {
         console.error("Report upload failed:", error);
