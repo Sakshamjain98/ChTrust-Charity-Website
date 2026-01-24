@@ -82,6 +82,10 @@
     ],
     "routes": [
         {
+            "src": "/videos/(.*)",
+            "dest": "/public/videos/$1"
+        },
+        {
             "src": "/js/(.*)",
             "dest": "/public/js/$1"
         },
