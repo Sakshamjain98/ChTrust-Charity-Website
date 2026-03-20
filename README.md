@@ -106,6 +106,14 @@ npm start
 
 ---
 
+## ⚠️ Disclaimer
+
+This project was developed as a **client project**. The codebase is shared here for demonstration and portfolio purposes only.
+
+Please use this code responsibly. Any reuse, modification, or deployment should be done **at your own risk** and with proper consideration of security, configurations, and client-specific customizations.
+
+---
+
 ## 🤝 Contributing
 
 1. Fork the repository  
