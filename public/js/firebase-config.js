@@ -9,12 +9,12 @@ import { getStorage } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-s
 // Your web app's Firebase configuration
 // Note: These are client-side public keys, safe to expose
 const firebaseConfig = {
-    apiKey: (window.env && window.env.NEXT_PUBLIC_FIREBASE_API_KEY) || "AIzaSyByQSIOjMyBBOET35gdwBy4UaDIgXfpZok",
-    authDomain: (window.env && window.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN) || "charity-e297e.firebaseapp.com",
-    projectId: (window.env && window.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID) || "charity-e297e",
-    storageBucket: (window.env && window.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET) || "charity-e297e.firebasestorage.app",
-    messagingSenderId: (window.env && window.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID) || "1075506898766",
-    appId: (window.env && window.env.NEXT_PUBLIC_FIREBASE_APP_ID) || "1:1075506898766:web:4673b175a48b728023a01f"
+    apiKey: (window.env && window.env.NEXT_PUBLIC_FIREBASE_API_KEY) ,
+    authDomain: (window.env && window.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN),
+    projectId: (window.env && window.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID) ,
+    storageBucket: (window.env && window.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET),
+    messagingSenderId: (window.env && window.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID) ,
+    appId: (window.env && window.env.NEXT_PUBLIC_FIREBASE_APP_ID) 
 };
 
 // Initialize Firebase (client-side only)
